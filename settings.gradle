@@ -2,4 +2,6 @@ include ':service'
 include ':service-compiler'
 include ':clients:client-nkzawa-socket.io'
 include ':clients:client-socket.io'
+include ':clients:client-websocket'
 include ':sample'
+
