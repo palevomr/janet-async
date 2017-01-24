@@ -30,12 +30,9 @@ public class AsyncActionClass extends ActionClass {
     private PendingResponseInfo responseInfo;
     private VariableElement payloadField;
     private boolean isBytesPayload;
-    private Types typesUtils;
-
 
     public AsyncActionClass(Elements elementUtils, Types typesUtils, TypeElement typeElement) {
         super(AsyncAction.class, elementUtils, typeElement);
-        this.typesUtils = typesUtils;
         AsyncAction annotation = typeElement.getAnnotation(AsyncAction.class);
         this.incoming = annotation.incoming();
         this.event = annotation.value();
@@ -62,7 +59,7 @@ public class AsyncActionClass extends ActionClass {
         if (element instanceof TypeElement) {
             TypeElement typeElement = (TypeElement) element;
             if (ClassName.get(typeElement.asType()).toString()
-                    .equals(ClassName.get(BytesArrayBody.class).toString())) {
+                            .equals(ClassName.get(BytesArrayBody.class).toString())) {
                 return true;
             }
             if (typeElement.getSuperclass() != null) {

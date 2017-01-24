@@ -53,7 +53,7 @@ final public class AsyncActionService extends ActionService {
     private final AsyncActionSynchronizer synchronizer;
     private AsyncActionWrapperFactory actionWrapperFactory;
     private final List<Object> runningActions;
-
+    private boolean shouldSkipBytes;
 
     public AsyncActionService(String url, AsyncClient client, Converter converter) {
         if (url == null) {
@@ -78,6 +78,11 @@ final public class AsyncActionService extends ActionService {
         for (String event : actionsRoster.getRegisteredEvents()) {
             client.subscribe(event);
         }
+    }
+
+    public AsyncActionService(String url, AsyncClient client, Converter converter, boolean shouldSkipBytes) {
+        this(url, client, converter);
+        this.shouldSkipBytes = shouldSkipBytes;
     }
 
     @Override protected Class getSupportedAnnotationType() {
@@ -121,7 +126,7 @@ final public class AsyncActionService extends ActionService {
         try {
             ActionBody actionBody = wrapper.getPayload(converter);
             byte[] content = actionBody.getContent();
-            if (wrapper.isBytesPayload()) {
+            if (shouldSkipBytes || wrapper.isBytesPayload()) {
                 client.send(wrapper.getEvent(), content);
             } else {
                 client.send(wrapper.getEvent(), new String(content));
