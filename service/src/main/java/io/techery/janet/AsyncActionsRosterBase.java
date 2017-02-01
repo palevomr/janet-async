@@ -1,5 +1,6 @@
 package io.techery.janet;
 
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,7 +17,7 @@ abstract class AsyncActionsRosterBase {
         return map.containsKey(event);
     }
 
-    Set<String> getRegisteredEvents() {
-        return map.keySet();
+    Enumeration<String> getRegisteredEvents() {
+        return map.keys();
     }
 }

@@ -1,5 +1,6 @@
 package io.techery.janet;
 
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -11,8 +12,8 @@ import io.techery.janet.async.actions.ConnectAsyncAction;
 import io.techery.janet.async.actions.DisconnectAsyncAction;
 import io.techery.janet.async.actions.ErrorAsyncAction;
 import io.techery.janet.async.annotations.AsyncAction;
-import io.techery.janet.async.annotations.PendingResponse;
 import io.techery.janet.async.annotations.Payload;
+import io.techery.janet.async.annotations.PendingResponse;
 import io.techery.janet.async.exception.AsyncServiceException;
 import io.techery.janet.async.exception.PendingResponseException;
 import io.techery.janet.body.ActionBody;
@@ -75,7 +76,9 @@ final public class AsyncActionService extends ActionService {
         loadActionWrapperFactory();
         loadAsyncActionRooster();
         client.setCallback(clientCallback);
-        for (String event : actionsRoster.getRegisteredEvents()) {
+        Enumeration<String> registeredEvents = actionsRoster.getRegisteredEvents();
+        while (registeredEvents.hasMoreElements()) {
+            String event = registeredEvents.nextElement();
             client.subscribe(event);
         }
     }
